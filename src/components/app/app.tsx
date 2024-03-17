@@ -7,18 +7,20 @@ import PrivateRoute from '../private-route/private-route';
 import { AuthorizationStatus } from '../constants/status.tsx';
 import { AppRoute } from '../constants/app-route.tsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
+import { Offer } from '../../types/offer';
 
 type AppComponentProps = {
   placesCount: number;
+  offers: Offer[];
 }
-
-function App({ placesCount }: AppComponentProps): JSX.Element {
+function App({ placesCount, offers }: AppComponentProps): JSX.Element {
+  const favourites = offers.filter((o) => o.isFavorite);
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainScreen placesCount={placesCount}/>}
+          element={<MainScreen placesCount={placesCount} offers={offers}/>}
         />
         <Route
           path={AppRoute.Login}
@@ -28,9 +30,9 @@ function App({ placesCount }: AppComponentProps): JSX.Element {
           path={AppRoute.Favorites}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.NoAuth}
+              authorizationStatus={AuthorizationStatus.Auth}
             >
-              <FavotitesScreen/>
+              <FavotitesScreen offers={favourites}/>
             </PrivateRoute>
           }
         />
