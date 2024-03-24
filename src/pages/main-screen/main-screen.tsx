@@ -1,6 +1,9 @@
 import OfferList from '../../offer-list/offer-list';
 import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
+import Map from '../../components/map/map';
+import { points } from '../../mocks/points';
+import { amsterdam } from '../../mocks/cities';
 
 type MainScreenProps = {
   placesCount: number;
@@ -102,7 +105,9 @@ function MainScreen({placesCount, offers}: MainScreenProps): JSX.Element {
               <OfferList offers={offers} />
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map points={points} city={amsterdam} selectedPoint={undefined}/>
+              </section>
             </div>
           </div>
         </div>
