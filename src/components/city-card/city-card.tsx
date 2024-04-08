@@ -3,10 +3,11 @@ import { Offer } from '../../types/offer';
 
 type OfferProps = {
   offer: Offer;
+  cardType: 'typical' | 'near';
 }
-function CityCard({offer}: OfferProps): JSX.Element {
+function CityCard({offer, cardType}: OfferProps): JSX.Element {
   return (
-    <article className="cities__card place-card">
+    <article className={`${cardType === 'typical' ? 'cities__card place-card' : 'near-places__card place-card'}`}>
       {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
