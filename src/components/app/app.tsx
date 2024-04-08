@@ -8,12 +8,14 @@ import { AuthorizationStatus } from '../constants/status.tsx';
 import { AppRoute } from '../constants/app-route.tsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+import { Review } from '../../types/review';
 
 type AppComponentProps = {
   placesCount: number;
   offers: Offer[];
+  reviews: Review[];
 }
-function App({ placesCount, offers }: AppComponentProps): JSX.Element {
+function App({ placesCount, offers, reviews }: AppComponentProps): JSX.Element {
   const favourites = offers.filter((o) => o.isFavorite);
   return (
     <BrowserRouter>
@@ -38,7 +40,7 @@ function App({ placesCount, offers }: AppComponentProps): JSX.Element {
         />
         <Route
           path={AppRoute.Offer}
-          element={<OfferScreen/>}
+          element={<OfferScreen reviews={reviews}/>}
         />
         <Route
           path="*"
