@@ -3,8 +3,7 @@ import CommentForm from '../../comment-form/comment-form';
 import { Review } from '../../types/review';
 import ReviewsList from '../../components/list-reviews/list-reviews';
 import { offers } from '../../mocks/offers';
-import { amsterdam } from '../../mocks/cities';
-import { points } from '../../mocks/points';
+import { cities } from '../../const';
 import Map from '../../components/map/map';
 import CityCardList from '../../offer-list/offer-list';
 
@@ -172,7 +171,7 @@ function OfferScreen({reviews}: OfferScreenProps): JSX.Element {
             </div>
           </div>
           <section className="offer__map map">
-            <Map city={amsterdam} points={points.slice(0, 3)} selectedPoint={undefined}/>
+            <Map city={cities[1]} offers={offers.slice(0,3)} selectedPoint={undefined}/>
           </section>
         </section>
         <div className="container">
