@@ -1,11 +1,10 @@
-import { Offer } from '../../types/offer';
 import { Link } from 'react-router-dom';
 import Card from '../../components/city-card/city-card';
-type FavoritesProps = {
-  offers: Offer[];
-}
+import { useAppSelector } from '../../hooks';
 
-function FavoritesScreen({offers}: FavoritesProps): JSX.Element {
+function FavoritesScreen(): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
+  const favoriteoffers = offers.filter((offer) => offer.isFavorite);
   return (
     <div className="page">
       <header className="header">
@@ -51,7 +50,7 @@ function FavoritesScreen({offers}: FavoritesProps): JSX.Element {
                   </div>
                 </div>
                 <div className="favorites__places">
-                  {offers.map((offer) =>
+                  {favoriteoffers.map((offer) =>
                     <Card key={offer.id} offer={offer} cardType='typical'/>
                   )}
                 </div>
