@@ -1,5 +1,7 @@
 import CityCard from '../components/city-card/city-card';
+import {useAppSelector} from '../hooks';
 import { Offer } from '../types/offer';
+import {sorting} from '../const.ts';
 
 type CityCardPropsList = {
   offers: Offer[];
@@ -7,9 +9,10 @@ type CityCardPropsList = {
 };
 
 function CityCardList({offers, listType}: CityCardPropsList): JSX.Element {
+  const selectedSortType = useAppSelector((state) => state.sortType);
   return (
     <div className={`${listType === 'typical' ? 'cities__places-list places__list tabs__content' : 'near-places__list places__list'}`}>
-      {offers.map((offer) => (
+      {sorting(offers,selectedSortType).map((offer) => (
         <CityCard key={offer.id} offer={offer} cardType={listType}/>
       ))}
     </div>

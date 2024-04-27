@@ -1,13 +1,19 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
+import { highlightMarker } from '../../store/action';
+import { useAppDispatch } from '../../hooks';
 
 type OfferProps = {
   offer: Offer;
   cardType: 'typical' | 'near';
 }
 function CityCard({offer, cardType}: OfferProps): JSX.Element {
+  const dispatch = useAppDispatch();
   return (
-    <article className={`${cardType === 'typical' ? 'cities__card place-card' : 'near-places__card place-card'}`}>
+    <article className={`${cardType === 'typical' ? 'cities__card place-card' : 'near-places__card place-card'}`}
+      onMouseOver={() => dispatch(highlightMarker({point:offer.point}))}
+      onMouseLeave={() => dispatch(highlightMarker(undefined))}
+    >
       {offer.isPremium && (
         <div className="place-card__mark">
           <span>Premium</span>
