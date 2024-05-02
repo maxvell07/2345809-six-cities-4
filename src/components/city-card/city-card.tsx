@@ -7,11 +7,12 @@ type OfferProps = {
   offer: Offer;
   cardType: 'typical' | 'near';
 }
+
 function CityCard({offer, cardType}: OfferProps): JSX.Element {
   const dispatch = useAppDispatch();
   return (
     <article className={`${cardType === 'typical' ? 'cities__card place-card' : 'near-places__card place-card'}`}
-      onMouseOver={() => dispatch(highlightMarker({point:offer.point}))}
+      onMouseOver={() => dispatch(highlightMarker({point:offer.id}))}
       onMouseLeave={() => dispatch(highlightMarker(undefined))}
     >
       {offer.isPremium && (
@@ -21,7 +22,7 @@ function CityCard({offer, cardType}: OfferProps): JSX.Element {
       )}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <a href="#">
-          <img className="place-card__image" src={offer.previewImage[0]} width="260" height="200" alt="Place image"/>
+          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image"/>
         </a>
       </div>
       <div className="place-card__info">

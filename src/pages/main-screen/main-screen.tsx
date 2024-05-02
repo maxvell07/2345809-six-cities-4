@@ -9,7 +9,7 @@ import SortingCardOffers from '../../components/sorting-card/sorting-card';
 function MainScreen(): JSX.Element {
   const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offers);
-  const cityOffers = offers.filter((offer) => offer.city === city);
+  const cityOffers = offers.filter((offer) => offer.city.name === city.name);
   return (
     <div className="page page--gray page--main">
       <header className="header">

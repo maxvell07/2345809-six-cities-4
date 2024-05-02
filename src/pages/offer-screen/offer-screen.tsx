@@ -2,15 +2,16 @@ import { Link } from 'react-router-dom';
 import CommentForm from '../../comment-form/comment-form';
 import { Review } from '../../types/review';
 import ReviewsList from '../../components/list-reviews/list-reviews';
-import { offers } from '../../mocks/offers';
 import { cities } from '../../const';
 import Map from '../../components/map/map';
 import CityCardList from '../../offer-list/offer-list';
+import { useAppSelector } from '../../hooks';
 
 type OfferScreenProps = {
   reviews: Review[];
 }
 function OfferScreen({reviews}: OfferScreenProps): JSX.Element {
+  const offers = useAppSelector((state) => state.offers);
   return (
     <div className="page">
       <header className="header">
