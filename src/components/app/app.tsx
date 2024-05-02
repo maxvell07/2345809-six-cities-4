@@ -4,19 +4,24 @@ import FavotitesScreen from '../../pages/favorites-screen/favorites-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen.tsx';
 import PrivateRoute from '../private-route/private-route';
-import { AuthorizationStatus } from '../constants/status.tsx';
+import { AuthorizationStatus } from '../../const.ts';
 import { AppRoute } from '../constants/app-route.tsx';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import { Review } from '../../types/review';
-import {useAppDispatch} from '../../hooks/index.ts';
-import {listFilling} from '../../store/action.ts';
-
+import {useAppSelector} from '../../hooks/index.ts';
+import LoadScreen from '../../pages/load-screen/load-screen.tsx';
 type AppComponentProps = {
   reviews: Review[];
 }
 function App({ reviews }: AppComponentProps): JSX.Element {
-  const dispatch = useAppDispatch();
-  dispatch(listFilling());
+  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown || isOffersDataLoading) {
+    return (
+      <LoadScreen/>
+    );
+  }
   return (
     <BrowserRouter>
       <Routes>
@@ -32,7 +37,7 @@ function App({ reviews }: AppComponentProps): JSX.Element {
           path={AppRoute.Favorites}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.Auth}
+              authorizationStatus={authorizationStatus}
             >
               <FavotitesScreen/>
             </PrivateRoute>

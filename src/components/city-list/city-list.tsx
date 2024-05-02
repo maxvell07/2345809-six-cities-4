@@ -1,5 +1,5 @@
-import { useAppDispatch } from '../../hooks';
-import {ChangeCity} from '../../store/action';
+import { useAppDispatch, useAppSelector } from '../../hooks';
+import { ChangeCity } from '../../store/action';
 import { City } from '../../types/city';
 
 
@@ -11,15 +11,20 @@ type CityProps = {
   city: City;
   cityChangeName: (city: City) => void;
 };
-const CityElement = ({city, cityChangeName}: CityProps): JSX.Element => (
-  <li className="locations__item" onClick={() => cityChangeName(city)}>
-    <a className="locations__item-link tabs__item" href="#">
-      <span>{city.name}</span>
-    </a>
-  </li>
-);
 
-function CitiesList({cities}: CitiesListProps): JSX.Element {
+function CityElement({ city, cityChangeName }: CityProps): JSX.Element {
+  const selectedCity = useAppSelector((state) => state.city);
+  return (
+    <li className="locations__item" onClick={() => cityChangeName(city)}>
+      <a className={`locations__item-link tabs__item ${(city === selectedCity) ? 'tabs__item--active' : ''}`}>
+        <span>{city.name}</span>
+      </a>
+    </li>
+  );
+}
+
+
+function CitiesList({ cities }: CitiesListProps): JSX.Element {
   const dispatch = useAppDispatch();
   return (
     <ul className="locations__list tabs__list">
@@ -27,7 +32,7 @@ function CitiesList({cities}: CitiesListProps): JSX.Element {
         <CityElement
           key={city.name}
           city={city}
-          cityChangeName= {() =>dispatch(ChangeCity(city))}
+          cityChangeName={() => dispatch(ChangeCity(city))}
         />
       ))}
     </ul>

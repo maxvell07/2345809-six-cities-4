@@ -5,40 +5,67 @@ import { Offer } from './types/offer';
 export const cities: City[] = [
   {
     name: 'Paris',
-    lat: 48.8534,
-    lng: 2.3479
+    location: {
+      latitude: 48.8534,
+      longitude: 2.3479,
+      zoom: 12,
+    },
   },
+
   {
     name: 'Amsterdam',
-    lat: 52.37022,
-    lng: 4.89521
+    location: {
+      latitude: 52.37022,
+      longitude: 4.89521,
+      zoom: 12,
+    },
   },
+
   {
     name: 'Cologne',
-    lat: 50.93333,
-    lng: 6.95
+    location: {
+      latitude: 50.93333,
+      longitude: 6.95,
+      zoom: 12,
+    },
   },
   {
     name: 'Brussels',
-    lat: 50.85036,
-    lng: 4.35173
+    location: {
+      latitude: 50.85036,
+      longitude: 4.35173,
+      zoom: 12,
+    },
   },
   {
     name: 'Hamburg',
-    lat: 53.5753,
-    lng: 10.015
+    location: {
+      latitude: 53.5753,
+      longitude: 10.015,
+      zoom: 12,
+    },
   },
   {
     name: 'Dusseldorf',
-    lat: 51.2217,
-    lng: 6.77617
+    location: {
+      latitude: 51.2217,
+      longitude: 6.77617,
+      zoom: 12,
+    },
   }
 ];
 
-//const Settings = {
-//  placesCount: 90,
-//} as const;
-//export default Settings;
+export enum AuthorizationStatus {
+  Auth = 'AUTH',
+  NoAuth = 'NO_AUTH',
+  Unknown = 'UNKNOWN',
+}
+
+export enum APIRoute {
+  Offers = '/offers',
+  Login = '/login',
+  Logout = '/logout',
+}
 
 export const defaultMarker =
   'public/img/pin.svg';
@@ -56,6 +83,8 @@ export const SORT_TYPE = {
   2: 'Price: high to low',
   3: 'Top rated first',
 };
+
+export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const sorting = (
   offers: Offer[],
@@ -75,4 +104,5 @@ export const sorting = (
     default:
       throw new Error('Non-existent sort type');
   }
+
 };

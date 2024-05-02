@@ -3,7 +3,6 @@ import React, { useEffect } from 'react';
 import {Icon, Marker, layerGroup} from 'leaflet';
 import useMap from '../../hooks/use-map';
 import {City} from '../../types/city';
-import {Point} from '../../types/point';
 import { Offer } from '../../types/offer';
 import {activeMarker, defaultMarker} from '../../const';
 import {useAppSelector} from '../../hooks';
@@ -30,12 +29,12 @@ function Map(props: MapProps): JSX.Element {
   const mapRef = React.useRef(null);
   const map = useMap(mapRef, city);
 
-  const selectedMarker: undefined | { point: Point } = useAppSelector(
+  const selectedMarker: undefined | { point: string } = useAppSelector(
     (state) => state.selectedMarker
   );
   useEffect(() => {
     if (map) {
-      map.setView([city.lat, city.lng]);
+      map.setView([city.location.latitude, city.location.longitude]);
     }
   }, [map, city]);
 
@@ -44,11 +43,11 @@ function Map(props: MapProps): JSX.Element {
       const markerLayer = layerGroup().addTo(map);
       offers.forEach((offer) => {
         const marker = new Marker({
-          lat: offer.point.lat,
-          lng: offer.point.lng
+          lat: offer.location.latitude,
+          lng: offer.location.longitude
         });
         marker
-          .setIcon(selectedMarker !== undefined && offer.point === selectedMarker.point ? activeCustomIcon : defaultCustomIcon)
+          .setIcon(selectedMarker !== undefined && offer.id === selectedMarker.point ? activeCustomIcon : defaultCustomIcon)
           .addTo(markerLayer);
       });
 
