@@ -9,7 +9,8 @@ import {
   loadOffers,
   setError,
   requireAuthorization,
-  setOffersDataLoadingStatus
+  setOffersDataLoadingStatus,
+  saveEmail
 } from './action';
 import {AuthorizationStatus} from '../const';
 
@@ -24,6 +25,7 @@ type StateType = {
   authorizationStatus: AuthorizationStatus;
   isOffersDataLoading: boolean;
   error: string | undefined;
+  userEmail: string | undefined;
 }
 
 const initialState: StateType = {
@@ -34,6 +36,7 @@ const initialState: StateType = {
   authorizationStatus: AuthorizationStatus.Unknown,
   isOffersDataLoading: false,
   error: undefined,
+  userEmail: undefined,
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -58,7 +61,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;
-
+    })
+    .addCase(saveEmail, (state, action) => {
+      state.userEmail = action.payload;
     });
 });
 export {reducer};

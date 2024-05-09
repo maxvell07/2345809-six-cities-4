@@ -40,8 +40,8 @@ export const cities: City[] = [
   {
     name: 'Hamburg',
     location: {
-      latitude: 53.5753,
-      longitude: 10.015,
+      latitude: 53.5500341,
+      longitude: 10.000654,
       zoom: 12,
     },
   },

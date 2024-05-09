@@ -34,7 +34,7 @@ function Map(props: MapProps): JSX.Element {
   );
   useEffect(() => {
     if (map) {
-      map.setView([city.location.latitude, city.location.longitude]);
+      map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
     }
   }, [map, city]);
 
