@@ -3,14 +3,15 @@ import React, { useEffect } from 'react';
 import {Icon, Marker, layerGroup} from 'leaflet';
 import useMap from '../../hooks/use-map';
 import {City} from '../../types/city';
-import { Offer } from '../../types/offer';
+import {Points } from '../../types/offer';
 import {activeMarker, defaultMarker} from '../../const';
 import {useAppSelector} from '../../hooks';
 import 'leaflet/dist/leaflet.css';
 
 type MapProps = {
   city: City;
-  offers: Offer[];
+  points: Points[];
+  singularCase: string | undefined;
 }
 
 const activeCustomIcon = new Icon({
@@ -24,38 +25,52 @@ const defaultCustomIcon = new Icon({
 });
 
 function Map(props: MapProps): JSX.Element {
-  const {city, offers} = props;
+  const {city, points, singularCase} = props;
 
   const mapRef = React.useRef(null);
   const map = useMap(mapRef, city);
 
-  const selectedMarker: undefined | { point: string } = useAppSelector(
+  const selectedMarker: undefined | { id: string } = useAppSelector(
     (state) => state.selectedMarker
   );
   useEffect(() => {
-    if (map) {
+    if (map && city) {
       map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
     }
-  }, [map, city]);
+  }, [city, map]);
 
   useEffect(() => {
-    if(map) {
+    if (map) {
       const markerLayer = layerGroup().addTo(map);
-      offers.forEach((offer) => {
+      points.forEach((point) => {
         const marker = new Marker({
-          lat: offer.location.latitude,
-          lng: offer.location.longitude
+          lat: point.location.latitude,
+          lng: point.location.longitude
         });
-        marker
-          .setIcon(selectedMarker !== undefined && offer.id === selectedMarker.point ? activeCustomIcon : defaultCustomIcon)
-          .addTo(markerLayer);
+
+        if (singularCase === undefined){
+          marker
+            .setIcon(selectedMarker !== null && point.id === selectedMarker?.id ? activeCustomIcon : defaultCustomIcon)
+            .addTo(markerLayer);
+        } else {
+          const isSingularlCase = singularCase && point.id === singularCase;
+          marker
+            .setIcon(isSingularlCase ? activeCustomIcon : defaultCustomIcon)
+            .addTo(markerLayer);
+        }
       });
 
       return () => {
         map.removeLayer(markerLayer);
       };
     }
-  }, [map, offers, selectedMarker]);
+  }, [map, points, selectedMarker, singularCase]);
+
+  useEffect(() => {
+    if (map && city) {
+      map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
+    }
+  }, [map, city]);
 
   return <div style={{height: '100%'}} ref={mapRef}></div>;
 }

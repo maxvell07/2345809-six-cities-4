@@ -12,7 +12,7 @@ function CityCard({offer, cardType}: OfferProps): JSX.Element {
   const dispatch = useAppDispatch();
   return (
     <article className={`${cardType === 'typical' ? 'cities__card place-card' : 'near-places__card place-card'}`}
-      onMouseOver={() => dispatch(highlightMarker({point:offer.id}))}
+      onMouseOver={() => dispatch(highlightMarker({id:offer.id}))}
       onMouseLeave={() => dispatch(highlightMarker(undefined))}
     >
       {offer.isPremium && (

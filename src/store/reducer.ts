@@ -1,5 +1,5 @@
 import {createReducer} from '@reduxjs/toolkit';
-import { Offer } from '../types/offer';
+import { ExtendedOffer, Offer } from '../types/offer';
 import { City } from '../types/city';
 import { cities } from '../const';
 import {
@@ -10,17 +10,25 @@ import {
   setError,
   requireAuthorization,
   setOffersDataLoadingStatus,
-  saveEmail
+  saveEmail,
+  loadOfferData,
+  sendReview
 } from './action';
 import {AuthorizationStatus} from '../const';
+import { Review } from '../types/review';
 
 type StateType = {
+  currentOffer: {
+    offerInfo: ExtendedOffer | undefined;
+    nearestOffers: Offer[];
+    reviews: Review[];
+  };
   city: City;
   offers: Offer[];
   sortType: string;
 
   selectedMarker: {
-    point: string;
+    id: string;
   } | undefined;
   authorizationStatus: AuthorizationStatus;
   isOffersDataLoading: boolean;
@@ -29,6 +37,11 @@ type StateType = {
 }
 
 const initialState: StateType = {
+  currentOffer: {
+    offerInfo: undefined,
+    nearestOffers: [],
+    reviews: [],
+  },
   city: cities[0],
   offers: [],
   sortType: 'Popular',
@@ -64,6 +77,13 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(saveEmail, (state, action) => {
       state.userEmail = action.payload;
+    })
+    .addCase(loadOfferData, (state, { payload }) => {
+      state.selectedMarker = { id: payload.offerInfo.id };
+      state.currentOffer = { ...payload };
+    })
+    .addCase(sendReview, (state, { payload }) => {
+      state.currentOffer.reviews = [...state.currentOffer.reviews, payload];
     });
 });
 export {reducer};

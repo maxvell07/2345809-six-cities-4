@@ -7,15 +7,12 @@ import PrivateRoute from '../private-route/private-route';
 import { AuthorizationStatus } from '../../const.ts';
 import { AppRoute } from '../constants/app-route.tsx';
 import { Route, Routes } from 'react-router-dom';
-import { Review } from '../../types/review';
 import {useAppSelector} from '../../hooks/index.ts';
 import LoadScreen from '../../pages/load-screen/load-screen.tsx';
 import browserHistory from '../../browser-history.ts';
 import HistoryRouter from '../history-router/history-router.tsx';
-type AppComponentProps = {
-  reviews: Review[];
-}
-function App({ reviews }: AppComponentProps): JSX.Element {
+
+function App(): JSX.Element {
   const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
   const isOffersDataLoading = useAppSelector((state) => state.isOffersDataLoading);
 
@@ -47,7 +44,7 @@ function App({ reviews }: AppComponentProps): JSX.Element {
         />
         <Route
           path={AppRoute.Offer}
-          element={<OfferScreen reviews={reviews}/>}
+          element={<OfferScreen />}
         />
         <Route
           path="*"

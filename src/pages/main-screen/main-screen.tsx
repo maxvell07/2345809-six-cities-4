@@ -1,18 +1,24 @@
 import OfferList from '../../offer-list/offer-list';
 import Map from '../../components/map/map';
+import { Offer } from '../../types/offer';
 import { useAppSelector } from '../../hooks';
 import CityList from '../../components/city-list/city-list';
 import { cities } from '../../const';
 import SortingCardOffers from '../../components/sorting-card/sorting-card';
-import LoginHat from '../../components/login-hat/login-hat';
+import LoginHeader from '../../components/login-header/login-header';
+import { useEffect, useState } from 'react';
 
 function MainScreen(): JSX.Element {
-  const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => state.offers);
-  const cityOffers = offers.filter((offer) => offer.city.name === city.name);
+  const [curCityOffers, setCurCityOffers] = useState<Offer[]>(offers);
+  const city = useAppSelector((state) => state.city);
+  useEffect(() => {
+    const filteredOffers = offers.filter((offer) => offer.city.name === city.name);
+    setCurCityOffers(filteredOffers);
+  }, [city, offers]);
   return (
     <div className="page page--gray page--main">
-      <LoginHat />
+      <LoginHeader />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
@@ -24,13 +30,13 @@ function MainScreen(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{cityOffers.length} places to stay in {city.name}</b>
+              <b className="places__found">{`${curCityOffers.length} places to stay in ${city.name}`}</b>
               <SortingCardOffers/>
-              <OfferList offers={cityOffers} listType='typical'/>
+              <OfferList offers={curCityOffers} listType='typical'/>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map offers={cityOffers} city={city}/>
+                <Map city={curCityOffers.length > 0 ? curCityOffers[0].city : offers[0].city} points={curCityOffers} singularCase={undefined}/>
               </section>
             </div>
           </div>

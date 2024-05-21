@@ -1,13 +1,13 @@
 import { Link } from 'react-router-dom';
 import Card from '../../components/city-card/city-card';
 import { useAppSelector } from '../../hooks';
-import LoginHat from '../../components/login-hat/login-hat';
+import LoginHeader from '../../components/login-header/login-header';
 function FavoritesScreen(): JSX.Element {
   const offers = useAppSelector((state) => state.offers);
   const favoriteoffers = offers.filter((offer) => offer.isFavorite);
   return (
     <div className="page">
-      <LoginHat />
+      <LoginHeader />
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">

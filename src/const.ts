@@ -65,13 +65,14 @@ export enum APIRoute {
   Offers = '/offers',
   Login = '/login',
   Logout = '/logout',
+  Comments = '/Comments'
 }
 
 export const defaultMarker =
-  'public/img/pin.svg';
+  '/img/pin.svg';
 
 export const activeMarker =
-  'public/img/pin-active.svg';
+  '/img/pin-active.svg';
 
 export const sortWidth = '6';
 
@@ -106,3 +107,11 @@ export const sorting = (
   }
 
 };
+
+const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
+
+export function formatDateForView(dateString: string) {
+  const date = new Date(dateString);
+  const newDate = `${months[date.getMonth()]} ${date.getFullYear()}`;
+  return newDate;
+}
