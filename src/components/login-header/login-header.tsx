@@ -1,18 +1,15 @@
-import {Link, useNavigate} from 'react-router-dom';
+import {Link} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../hooks/index.ts';
 import {AuthorizationStatus} from '../../const.ts';
 import { logoutAction } from '../../store/api-action.ts';
-import { AppRoute } from '../constants/app-route.tsx';
 
-function LoginHat(): JSX.Element {
+function LoginHeader(): JSX.Element {
   const dispatch = useAppDispatch();
-  const navigate = useNavigate();
-  const user = useAppSelector((state) => state.authorizationStatus);
+  const status = useAppSelector((state) => state.authorizationStatus);
   const userEmail = useAppSelector((state) => state.userEmail);
   const favorites = useAppSelector((state) => state.offers.filter((o) => o.isFavorite));
   const handleSignOut = () => {
     dispatch(logoutAction());
-    navigate(AppRoute.Main);
   };
 
   return (
@@ -30,7 +27,7 @@ function LoginHat(): JSX.Element {
                 <div className="header__nav-link header__nav-link--profile">
                   <div className="header__avatar-wrapper user__avatar-wrapper">
                   </div>
-                  {user === AuthorizationStatus.Auth ? (
+                  {status === AuthorizationStatus.Auth ? (
                     <Link to="/favorites">
                       <span className="header__user-name user__name">{userEmail}</span>
                       <span className="header__favorite-count">{favorites.length}</span>
@@ -40,11 +37,11 @@ function LoginHat(): JSX.Element {
                   )}
                 </div>
               </li>
-              {user === AuthorizationStatus.Auth && (
+              {status === AuthorizationStatus.Auth && (
                 <li className="header__nav-item">
-                  <a className="header__nav-link" onClick={handleSignOut}>
+                  <Link to="/login" className="header__nav-link" onClick={handleSignOut}>
                     <span className="header__signout">Sign out</span>
-                  </a>
+                  </Link>
                 </li>
               )}
             </ul>
@@ -55,4 +52,4 @@ function LoginHat(): JSX.Element {
   );
 }
 
-export default LoginHat;
+export default LoginHeader;
