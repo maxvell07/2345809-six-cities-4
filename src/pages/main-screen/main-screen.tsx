@@ -7,13 +7,15 @@ import { cities } from '../../const';
 import SortingCardOffers from '../../components/sorting-card/sorting-card';
 import LoginHeader from '../../components/login-header/login-header';
 import { useEffect, useState } from 'react';
+import { getOffers } from '../../store/offers-process/selectors';
+import { getCity } from '../../store/other-process/selectors';
 
 function MainScreen(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers);
+  const offers = useAppSelector(getOffers);
   const [curCityOffers, setCurCityOffers] = useState<Offer[]>(offers);
-  const city = useAppSelector((state) => state.city);
+  const city = useAppSelector(getCity);
   useEffect(() => {
-    const filteredOffers = offers.filter((offer) => offer.city.name === city.name);
+    const filteredOffers = offers.filter((offer) => offer.city.name === city);
     setCurCityOffers(filteredOffers);
   }, [city, offers]);
   return (
@@ -30,7 +32,7 @@ function MainScreen(): JSX.Element {
           <div className="cities__places-container container">
             <section className="cities__places places">
               <h2 className="visually-hidden">Places</h2>
-              <b className="places__found">{`${curCityOffers.length} places to stay in ${city.name}`}</b>
+              <b className="places__found">{`${curCityOffers.length} places to stay in ${city}`}</b>
               <SortingCardOffers/>
               <OfferList offers={curCityOffers} listType='typical'/>
             </section>

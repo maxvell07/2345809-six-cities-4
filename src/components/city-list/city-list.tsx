@@ -1,6 +1,8 @@
 import { useAppDispatch, useAppSelector } from '../../hooks';
-import { ChangeCity } from '../../store/action';
+import { cityChange } from '../../store/other-process/other-process';
+import { getCity } from '../../store/other-process/selectors';
 import { City } from '../../types/city';
+import { memo } from 'react';
 
 
 type CitiesListProps = {
@@ -8,16 +10,16 @@ type CitiesListProps = {
 };
 
 type CityProps = {
-  city: City;
-  cityChangeName: (city: City) => void;
+  city: string;
+  cityChangeName: (city: string) => void;
 };
 
 function CityElement({ city, cityChangeName }: CityProps): JSX.Element {
-  const selectedCity = useAppSelector((state) => state.city);
+  const selectedCity = useAppSelector(getCity);
   return (
     <li className="locations__item" onClick={() => cityChangeName(city)}>
       <a className={`locations__item-link tabs__item ${(city === selectedCity) ? 'tabs__item--active' : ''}`}>
-        <span>{city.name}</span>
+        <span>{city}</span>
       </a>
     </li>
   );
@@ -26,17 +28,20 @@ function CityElement({ city, cityChangeName }: CityProps): JSX.Element {
 
 function CitiesList({ cities }: CitiesListProps): JSX.Element {
   const dispatch = useAppDispatch();
+  const changeCurCity = (city: string) =>{
+    dispatch(cityChange(city));
+  };
   return (
     <ul className="locations__list tabs__list">
       {cities.map((city) => (
         <CityElement
           key={city.name}
-          city={city}
-          cityChangeName={() => dispatch(ChangeCity(city))}
+          city={city.name}
+          cityChangeName={changeCurCity}
         />
       ))}
     </ul>
   );
 }
-
-export default CitiesList;
+const CitiesListMemo = memo(CitiesList);
+export default CitiesListMemo;

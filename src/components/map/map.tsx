@@ -7,6 +7,7 @@ import {Points } from '../../types/offer';
 import {activeMarker, defaultMarker} from '../../const';
 import {useAppSelector} from '../../hooks';
 import 'leaflet/dist/leaflet.css';
+import { getSelectedMarker } from '../../store/offers-process/selectors';
 
 type MapProps = {
   city: City;
@@ -30,9 +31,7 @@ function Map(props: MapProps): JSX.Element {
   const mapRef = React.useRef(null);
   const map = useMap(mapRef, city);
 
-  const selectedMarker: undefined | { id: string } = useAppSelector(
-    (state) => state.selectedMarker
-  );
+  const selectedMarker: null | { id: string } = useAppSelector(getSelectedMarker);
   useEffect(() => {
     if (map && city) {
       map.setView([city.location.latitude, city.location.longitude], city.location.zoom);
