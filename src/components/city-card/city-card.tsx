@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 import { Offer } from '../../types/offer';
-import { highlightMarker } from '../../store/action';
+import {highlightMarker} from '../../store/offers-process/offers-process.ts';
 import { useAppDispatch } from '../../hooks';
 
 type OfferProps = {
@@ -13,7 +13,7 @@ function CityCard({offer, cardType}: OfferProps): JSX.Element {
   return (
     <article className={`${cardType === 'typical' ? 'cities__card place-card' : 'near-places__card place-card'}`}
       onMouseOver={() => dispatch(highlightMarker({id:offer.id}))}
-      onMouseLeave={() => dispatch(highlightMarker(undefined))}
+      onMouseLeave={() => dispatch(highlightMarker(null))}
     >
       {offer.isPremium && (
         <div className="place-card__mark">

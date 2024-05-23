@@ -3,12 +3,13 @@ import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-action';
 import { AuthorizationStatus } from '../../const';
 import { AppRoute } from '../../components/constants/app-route';
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
 
 function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
-  const status = useAppSelector((state) => state.authorizationStatus);
+  const status = useAppSelector(getAuthorizationStatus);
 
   if(status === AuthorizationStatus.Auth) {
     window.location.replace (AppRoute.Main);

@@ -9,18 +9,14 @@ import LoginHeader from '../../components/login-header/login-header';
 import { useParams } from 'react-router-dom';
 import { useEffect } from 'react';
 import { fetchOfferDataAction } from '../../store/api-action';
-
+import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { getRaiting } from '../../store/other-process/selectors';
+import { selectCurrentOfferData } from '../../store/selectors';
 function OfferScreen(): JSX.Element {
   const { id } = useParams();
-  const status = useAppSelector((state) => state.authorizationStatus);
-  const rating = useAppSelector((state) => state.currentOffer.offerInfo?.rating);
-  const { offerInfo, nearestOffers, reviews } = useAppSelector(
-    ({ currentOffer }) => ({
-      offerInfo: currentOffer.offerInfo,
-      nearestOffers: currentOffer.nearestOffers,
-      reviews: currentOffer.reviews,
-    })
-  );
+  const status = useAppSelector(getAuthorizationStatus);
+  const rating = useAppSelector(getRaiting);
+  const {offerInfo, nearestOffers, reviews} = useAppSelector(selectCurrentOfferData);
   const points: Points[] = nearestOffers.map((offer) => ({
     id: offer.id,
     location: offer.location,

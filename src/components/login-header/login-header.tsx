@@ -2,12 +2,12 @@ import {Link} from 'react-router-dom';
 import {useAppDispatch, useAppSelector} from '../../hooks/index.ts';
 import {AuthorizationStatus} from '../../const.ts';
 import { logoutAction } from '../../store/api-action.ts';
+import {getAuthorizationStatus, getUserEmail} from '../../store/user-process/selectors.ts';
 
 function LoginHeader(): JSX.Element {
   const dispatch = useAppDispatch();
-  const status = useAppSelector((state) => state.authorizationStatus);
-  const userEmail = useAppSelector((state) => state.userEmail);
-  const favorites = useAppSelector((state) => state.offers.filter((o) => o.isFavorite));
+  const status = useAppSelector(getAuthorizationStatus);
+  const userEmail = useAppSelector(getUserEmail);
   const handleSignOut = () => {
     dispatch(logoutAction());
   };
@@ -30,7 +30,7 @@ function LoginHeader(): JSX.Element {
                   {status === AuthorizationStatus.Auth ? (
                     <Link to="/favorites">
                       <span className="header__user-name user__name">{userEmail}</span>
-                      <span className="header__favorite-count">{favorites.length}</span>
+                      <span className="header__favorite-count">{}</span>
                     </Link>
                   ) : (
                     <Link to="/login" className="header__nav-link">Login</Link>

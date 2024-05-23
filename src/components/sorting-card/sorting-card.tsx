@@ -1,11 +1,12 @@
 import {useState} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks/index.ts';
-import {sortTypeSelector} from '../../store/action.ts';
 import {sortWidth, sortHeight, SORT_TYPE} from '../../const.ts';
+import {getSortType} from '../../store/other-process/selectors.ts';
+import { sortTypeSelector } from '../../store/other-process/other-process.ts';
 
 function SortingCardOffers() {
   const [isOpen, setIsOpen] = useState(false);
-  const selectedsortType = useAppSelector((state) => state.sortType);
+  const selectedsortType = useAppSelector(getSortType);
   const dispatch = useAppDispatch();
   const handleSortTypeChange = (sortType: string) => {
     dispatch(sortTypeSelector(sortType));

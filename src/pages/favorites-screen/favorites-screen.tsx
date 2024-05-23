@@ -2,8 +2,9 @@ import { Link } from 'react-router-dom';
 import Card from '../../components/city-card/city-card';
 import { useAppSelector } from '../../hooks';
 import LoginHeader from '../../components/login-header/login-header';
+import { getOffers } from '../../store/offers-process/selectors';
 function FavoritesScreen(): JSX.Element {
-  const offers = useAppSelector((state) => state.offers);
+  const offers = useAppSelector(getOffers);
   const favoriteoffers = offers.filter((offer) => offer.isFavorite);
   return (
     <div className="page">

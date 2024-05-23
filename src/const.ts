@@ -115,3 +115,9 @@ export function formatDateForView(dateString: string) {
   const newDate = `${months[date.getMonth()]} ${date.getFullYear()}`;
   return newDate;
 }
+
+export enum NameSpace {
+  Other = 'OTHER',
+  Offers = 'OFFERS',
+  User = 'USER',
+}
