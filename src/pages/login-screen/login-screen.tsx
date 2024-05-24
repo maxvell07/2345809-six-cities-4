@@ -1,9 +1,11 @@
 import { FormEvent, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-action';
-import { AuthorizationStatus } from '../../const';
-import { AppRoute } from '../../components/constants/app-route';
+import { AuthorizationStatus, randomCity } from '../../const';
+import { AppRoute } from '../../const';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
+import { cityChange } from '../../store/other-process/other-process';
+import { Link } from 'react-router-dom';
 
 function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
@@ -11,8 +13,8 @@ function LoginScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   const status = useAppSelector(getAuthorizationStatus);
 
-  if(status === AuthorizationStatus.Auth) {
-    window.location.replace (AppRoute.Main);
+  if (status === AuthorizationStatus.Auth) {
+    window.location.replace(AppRoute.Main);
   }
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
@@ -25,6 +27,12 @@ function LoginScreen(): JSX.Element {
         })
       );
     }
+  };
+  const getRandomCity = () => randomCity[Math.floor(Math.random() * randomCity.length)];
+
+  const newCityName = getRandomCity();
+  const handleCityClick = () => {
+    dispatch(cityChange(newCityName));
   };
 
   return (
@@ -48,7 +56,7 @@ function LoginScreen(): JSX.Element {
             <form className="login__form form" onSubmit={handleSubmit}>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">E-mail</label>
-                <input className="login__input form__input" type="email" name="email" placeholder="Email"ref={loginRef} required />
+                <input className="login__input form__input" type="email" name="email" placeholder="Email" ref={loginRef} required />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
                 <label className="visually-hidden">Password</label>
@@ -58,6 +66,11 @@ function LoginScreen(): JSX.Element {
             </form>
           </section>
           <section className="locations locations--login locations--current">
+            <div className="locations__item">
+              <Link to="/" className="locations__item-link" onClick={handleCityClick}>
+                <span>{newCityName}</span>
+              </Link>
+            </div>
           </section>
         </div>
       </main>

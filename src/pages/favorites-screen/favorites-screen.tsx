@@ -1,35 +1,22 @@
 import { Link } from 'react-router-dom';
-import Card from '../../components/city-card/city-card';
 import { useAppSelector } from '../../hooks';
 import LoginHeader from '../../components/login-header/login-header';
-import { getOffers } from '../../store/offers-process/selectors';
+import { getFavorites } from '../../store/offers-process/selectors';
+import EmptyFavorites from '../../components/empty-favorites/empty-favorites';
+import FavoritesList from '../../components/favorites-list/favorites-list';
 function FavoritesScreen(): JSX.Element {
-  const offers = useAppSelector(getOffers);
-  const favoriteoffers = offers.filter((offer) => offer.isFavorite);
+  // const offers = useAppSelector(getOffers);
+  const favorites = useAppSelector(getFavorites);
   return (
     <div className="page">
       <LoginHeader />
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
-          <section className="favorites">
-            <h1 className="favorites__title">Saved listing</h1>
-            <ul className="favorites__list">
-              <li className="favorites__locations-items">
-                <div className="favorites__locations locations locations--current">
-                  <div className="locations__item">
-                    <a className="locations__item-link" href="#">
-                      <span>Amsterdam</span>
-                    </a>
-                  </div>
-                </div>
-                <div className="favorites__places">
-                  {favoriteoffers.map((offer) =>
-                    <Card key={offer.id} offer={offer} cardType='typical' />
-                  )}
-                </div>
-              </li>
-            </ul>
-          </section>
+          {favorites.length > 0 ? (
+            <FavoritesList favorites={favorites} />
+          ) : (
+            <EmptyFavorites />
+          )}
         </div>
       </main>
       <footer className="footer container">
