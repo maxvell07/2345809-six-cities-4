@@ -11,12 +11,14 @@ import { useEffect } from 'react';
 import { fetchOfferDataAction } from '../../store/api-action';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { getRaiting } from '../../store/other-process/selectors';
+import AddToFavourites from '../../components/add-favorites/add-favorites';
 import { selectCurrentOfferData } from '../../store/selectors';
+
 function OfferScreen(): JSX.Element {
   const { id } = useParams();
   const status = useAppSelector(getAuthorizationStatus);
   const rating = useAppSelector(getRaiting);
-  const {offerInfo, nearestOffers, reviews} = useAppSelector(selectCurrentOfferData);
+  const { offerInfo, nearestOffers, reviews } = useAppSelector(selectCurrentOfferData);
   const points: Points[] = nearestOffers.map((offer) => ({
     id: offer.id,
     location: offer.location,
@@ -34,7 +36,7 @@ function OfferScreen(): JSX.Element {
   const dispatch = useAppDispatch();
   useEffect(() => {
     dispatch(fetchOfferDataAction({ id: id ?? '' }));
-  }, [dispatch,id]);
+  }, [dispatch, id]);
 
   if (!offerInfo) {
     return <div className="container">Loading</div>;
@@ -61,14 +63,18 @@ function OfferScreen(): JSX.Element {
                   <span>Premium</span>
                 </div>
               )}
-              <div className="offer__name-wrapper">
+              <div className="offer__name-wrapper" style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'stretch' }}>
                 <h1 className="offer__name">{offerInfo.title}</h1>
-                <button className="offer__bookmark-button button" type="button">
-                  <svg className="offer__bookmark-icon" width="31" height="33">
-                    <use xlinkHref="#icon-bookmark"></use>
-                  </svg>
-                  <span className="visually-hidden">To bookmarks</span>
-                </button>
+                <AddToFavourites
+                  id={offerInfo.id}
+                  isFavorite={offerInfo.isFavorite}
+                  iconWidth={31}
+                  iconHeight={33}
+                  buttonClass="place-card__bookmark-button"
+                  activeClass="place-card__bookmark-button--active"
+                  iconClass="place-card__bookmark-icon"
+                  buttonText="In bookmarks"
+                />
               </div>
               <div className="offer__rating rating">
                 <div className="offer__stars rating__stars">

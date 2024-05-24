@@ -4,7 +4,7 @@ import FavotitesScreen from '../../pages/favorites-screen/favorites-screen';
 import OfferScreen from '../../pages/offer-screen/offer-screen';
 import NotFoundScreen from '../../pages/not-found-screen/not-found-screen.tsx';
 import PrivateRoute from '../private-route/private-route';
-import { AppRoute } from '../constants/app-route.tsx';
+import { AppRoute } from '../../const.ts';
 import { Route, Routes } from 'react-router-dom';
 import { useAppSelector } from '../../hooks/index.ts';
 import LoadScreen from '../../pages/load-screen/load-screen.tsx';
@@ -45,7 +45,7 @@ function App(): JSX.Element {
           }
         />
         <Route
-          path={AppRoute.Offer}
+          path={AppRoute.Offers}
           element={<OfferScreen />}
         />
         <Route

@@ -60,12 +60,24 @@ export enum AuthorizationStatus {
   NoAuth = 'NO_AUTH',
   Unknown = 'UNKNOWN',
 }
+export enum AppRoute {
+  Main = '/',
+  Login = '/login',
+  Favorites = '/favorites',
+  Offers = '/offer/:id'
+}
+
 
 export enum APIRoute {
   Offers = '/offers',
   Login = '/login',
   Logout = '/logout',
-  Comments = '/Comments'
+  Comments = '/Comments',
+  Favorite = '/favorite'
+}
+export enum FavouriteStatus {
+  Add = 1,
+  Remove = 0,
 }
 
 export const defaultMarker =
@@ -110,6 +122,8 @@ export const sorting = (
 
 const months = ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'];
 
+export const randomCity = ['Amsterdam', 'Paris', 'Cologne', 'Brussels', 'Hamburg', 'Dusseldorf'];
+
 export function formatDateForView(dateString: string) {
   const date = new Date(dateString);
   const newDate = `${months[date.getMonth()]} ${date.getFullYear()}`;
@@ -121,3 +135,10 @@ export enum NameSpace {
   Offers = 'OFFERS',
   User = 'USER',
 }
+
+export const updateOffer = (offers: Offer[], updatedOffer: Offer) => {
+  const offerIndex = offers.findIndex((el) => el.id === updatedOffer.id);
+  if (offerIndex !== -1) {
+    offers[offerIndex] = updatedOffer;
+  }
+};

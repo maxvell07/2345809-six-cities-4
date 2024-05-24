@@ -1,7 +1,7 @@
 import {createSlice, PayloadAction} from '@reduxjs/toolkit';
 import {Offer} from '../../types/offer';
 import {OffersState} from '../state.ts';
-import {NameSpace} from '../../const.ts';
+import {NameSpace, updateOffer} from '../../const.ts';
 import {OfferData} from '../../types/offer-data.ts';
 import { Review } from '../../types/review.ts';
 
@@ -15,6 +15,7 @@ const initialState: OffersState = {
   offers: [],
   selectedMarker: null,
   isOffersDataLoading: false,
+  favorites: [],
 };
 
 export const offersProc = createSlice({
@@ -24,8 +25,14 @@ export const offersProc = createSlice({
     loadOffers(state, action: PayloadAction<Offer[]>) {
       state.offers = action.payload;
     },
+    updateOffers: (state, action: PayloadAction<Offer>) => {
+      updateOffer(state.offers, action.payload);
+    },
     setOffersDataLoadingStatus(state, action: PayloadAction<boolean>) {
       state.isOffersDataLoading = action.payload;
+    },
+    loadFavorites(state, action: PayloadAction<Offer[]>) {
+      state.favorites = action.payload;
     },
     loadOfferData(state, action: PayloadAction<OfferData>) {
       state.selectedMarker = {id: action.payload.offerInfo.id};
@@ -39,4 +46,4 @@ export const offersProc = createSlice({
     },
   },
 });
-export const {loadOffers, setOffersDataLoadingStatus, loadOfferData, sendReview, highlightMarker} = offersProc.actions;
+export const { loadOffers, setOffersDataLoadingStatus, loadOfferData, sendReview, highlightMarker, updateOffers, loadFavorites} = offersProc.actions;
