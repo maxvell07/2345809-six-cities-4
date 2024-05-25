@@ -5,7 +5,6 @@ import { getFavorites } from '../../store/offers-process/selectors';
 import EmptyFavorites from '../../components/empty-favorites/empty-favorites';
 import FavoritesList from '../../components/favorites-list/favorites-list';
 function FavoritesScreen(): JSX.Element {
-  // const offers = useAppSelector(getOffers);
   const favorites = useAppSelector(getFavorites);
   return (
     <div className="page">

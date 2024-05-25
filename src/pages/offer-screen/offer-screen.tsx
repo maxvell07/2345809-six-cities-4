@@ -88,10 +88,10 @@ function OfferScreen(): JSX.Element {
                   {offerInfo.type}
                 </li>
                 <li className="offer__feature offer__feature--bedrooms">
-                  {`${offerInfo.bedrooms} bedrooms`}
+                  {`${offerInfo.bedrooms} ${offerInfo.bedrooms && offerInfo.bedrooms > 1 ? 'Bedrooms' : 'Bedroom'}`}
                 </li>
                 <li className="offer__feature offer__feature--adults">
-                  {`Max ${offerInfo.maxAdults} adults`}
+                  {`Max ${offerInfo.maxAdults} ${offerInfo.maxAdults && offerInfo.maxAdults > 1 ? 'adults' : 'adult'}`}
                 </li>
               </ul>
               <div className="offer__price">
