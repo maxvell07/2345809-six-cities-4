@@ -3,16 +3,17 @@ import { Offer } from '../../types/offer';
 import { highlightMarker } from '../../store/offers-process/offers-process.ts';
 import { useAppDispatch } from '../../hooks';
 import AddFavorites from '../add-favorites/add-favorites.tsx';
+import { cardTypeMap } from '../../const.ts';
 
 type OfferProps = {
   offer: Offer;
-  cardType: 'typical' | 'near';
+  cardType: 'typical' | 'near' | 'favorite';
 }
 
 function CityCard({ offer, cardType }: OfferProps): JSX.Element {
   const dispatch = useAppDispatch();
   return (
-    <article className={`${cardType === 'typical' ? 'cities__card place-card' : 'near-places__card place-card'}`}
+    <article className={`${cardTypeMap.get(cardType)}`}
       onMouseOver={() => dispatch(highlightMarker({ id: offer.id }))}
       onMouseLeave={() => dispatch(highlightMarker(null))}
     >
@@ -21,12 +22,12 @@ function CityCard({ offer, cardType }: OfferProps): JSX.Element {
           <span>Premium</span>
         </div>
       )}
-      <div className="cities__image-wrapper place-card__image-wrapper">
+      <div className={`${cardType === 'favorite' ? 'favorites' : 'cities'}__image-wrapper place-card__image-wrapper`}>
         <a href="#">
-          <img className="place-card__image" src={offer.previewImage} width="260" height="200" alt="Place image" />
+          <img className="place-card__image" src={offer.previewImage} width={cardType === 'favorite' ? '150' : '260'} height={cardType === 'favorite' ? '110' : '200'} alt="Place image" />
         </a>
       </div>
-      <div className="place-card__info">
+      <div className={(cardType === 'favorite') ? 'favorites__card-info place-card__info' : 'place-card__info'}>
         <div className="place-card__price-wrapper">
           <div className="place-card__price">
             <b className="place-card__price-value">&euro;{offer.price}</b>
@@ -54,7 +55,7 @@ function CityCard({ offer, cardType }: OfferProps): JSX.Element {
         </h2>
         <p className="place-card__type">{offer.type}</p>
       </div>
-    </article>
+    </article >
   );
 }
 export default CityCard;

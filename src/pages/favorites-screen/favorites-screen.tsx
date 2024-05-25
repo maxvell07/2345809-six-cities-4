@@ -5,7 +5,6 @@ import { getFavorites } from '../../store/offers-process/selectors';
 import EmptyFavorites from '../../components/empty-favorites/empty-favorites';
 import FavoritesList from '../../components/favorites-list/favorites-list';
 function FavoritesScreen(): JSX.Element {
-  // const offers = useAppSelector(getOffers);
   const favorites = useAppSelector(getFavorites);
   return (
     <div className="page">
@@ -21,9 +20,7 @@ function FavoritesScreen(): JSX.Element {
       </main>
       <footer className="footer container">
         <Link to="/" className="footer__logo-link">
-          <a className="footer__logo-link" href="main.html">
-            <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
-          </a>
+          <img className="footer__logo" src="img/logo.svg" alt="6 cities logo" width="64" height="33" />
         </Link>
       </footer>
     </div>
