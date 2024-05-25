@@ -142,3 +142,9 @@ export const updateOffer = (offers: Offer[], updatedOffer: Offer) => {
     offers[offerIndex] = updatedOffer;
   }
 };
+
+export const cardTypeMap = new Map ([
+  ['typical', 'cities__card place-card'],
+  ['near', 'near-places__card place-card'],
+  ['favorite', 'favorites__card place-card']
+]);

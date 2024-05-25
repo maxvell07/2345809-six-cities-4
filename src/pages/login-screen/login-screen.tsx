@@ -1,4 +1,4 @@
-import { FormEvent, useRef } from 'react';
+import { FormEvent, useEffect, useRef } from 'react';
 import { useAppDispatch, useAppSelector } from '../../hooks';
 import { loginAction } from '../../store/api-action';
 import { AuthorizationStatus, randomCity } from '../../const';
@@ -6,16 +6,19 @@ import { AppRoute } from '../../const';
 import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { cityChange } from '../../store/other-process/other-process';
 import { Link } from 'react-router-dom';
+import { redirectToRoute } from '../../store/action';
 
 function LoginScreen(): JSX.Element {
   const loginRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
   const dispatch = useAppDispatch();
   const status = useAppSelector(getAuthorizationStatus);
+  useEffect(() => {
+    if (status === AuthorizationStatus.Auth){
+      dispatch(redirectToRoute(AppRoute.Main));
+    }
+  });
 
-  if (status === AuthorizationStatus.Auth) {
-    window.location.replace(AppRoute.Main);
-  }
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
     evt.preventDefault();
 
