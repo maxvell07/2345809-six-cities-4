@@ -1,3 +1,4 @@
+import { COMMENT_COUNT } from '../../const.ts';
 import { Review } from '../../types/review.ts';
 import OneReview from '../review/review.tsx';
 
@@ -17,7 +18,7 @@ function ReviewsList({reviews}: ReviewListProps): JSX.Element {
 
           return dateB - dateA;
         })
-        .slice(0, 10)
+        .slice(0, COMMENT_COUNT)
         .map((review) => (
 
           <OneReview key={review.id} review={review} />

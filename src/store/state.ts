@@ -24,7 +24,9 @@ export type OffersState = {
     id: string;
   } | null;
   isOffersDataLoading: boolean;
+  isSelectedDataLoading: boolean;
   favorites: Offer[];
+  hasError: boolean;
 };
 
 export type OtherState = {

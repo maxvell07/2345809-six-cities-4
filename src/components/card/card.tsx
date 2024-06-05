@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { Offer } from '../../types/offer';
+import { Offer } from '../../types/offer.ts';
 import { highlightMarker } from '../../store/offers-process/offers-process.ts';
-import { useAppDispatch } from '../../hooks';
+import { useAppDispatch } from '../../hooks/index.ts';
 import AddFavorites from '../add-favorites/add-favorites.tsx';
 import { cardTypeMap } from '../../const.ts';
 
@@ -10,7 +10,7 @@ type OfferProps = {
   cardType: 'typical' | 'near' | 'favorite';
 }
 
-function CityCard({ offer, cardType }: OfferProps): JSX.Element {
+function Cards({ offer, cardType }: OfferProps): JSX.Element {
   const dispatch = useAppDispatch();
   return (
     <article className={`${cardTypeMap.get(cardType)}`}
@@ -23,7 +23,7 @@ function CityCard({ offer, cardType }: OfferProps): JSX.Element {
         </div>
       )}
       <div className={`${cardType === 'favorite' ? 'favorites' : 'cities'}__image-wrapper place-card__image-wrapper`}>
-        <a href="#">
+        <a >
           <img className="place-card__image" src={offer.previewImage} width={cardType === 'favorite' ? '150' : '260'} height={cardType === 'favorite' ? '110' : '200'} alt="Place image" />
         </a>
       </div>
@@ -58,4 +58,4 @@ function CityCard({ offer, cardType }: OfferProps): JSX.Element {
     </article >
   );
 }
-export default CityCard;
+export default Cards;

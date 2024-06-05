@@ -3,7 +3,6 @@ import {AppDispatch, State} from '../store/state';
 import {AxiosInstance} from 'axios';
 import {ExtendedOffer, Offer} from '../types/offer';
 import {redirectToRoute} from './action.ts';
-import {store} from './index.ts';
 import { UserData } from '../types/user-data.ts';
 import { AuthData } from '../types/auth-data.ts';
 import { Review } from '../types/review.ts';
@@ -11,12 +10,13 @@ import {APIRoute, AuthorizationStatus,AppRoute, TIMEOUT_SHOW_ERROR} from '../con
 import {dropToken, saveToken} from '../services/token.ts';
 import {CommentFormData} from '../types/comment-form-data.ts';
 import { requireAuthorization} from './user-process/user-process.ts';
-import {loadFavorites, loadOfferData, loadOffers, sendReview, setOffersDataLoadingStatus, updateOffers} from './offers-process/offers-process.ts';
+import {loadFavorites, sendReview, updateOffers} from './offers-process/offers-process.ts';
 import {setError} from './other-process/other-process.ts';
 import {dropEmail, saveEmail} from '../services/email.ts';
 import { CheckButton } from '../types/button.ts';
+import { OfferData } from '../types/offer-data.ts';
 
-export const fetchOffersAction = createAsyncThunk<void, undefined, {
+export const fetchOffersAction = createAsyncThunk<Offer[], undefined, {
   dispatch: AppDispatch;
   state: State;
   extra: AxiosInstance;
@@ -24,16 +24,14 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
 
 
   'offers/fetchOffers',
-  async (_arg, {dispatch, extra: api}) => {
-    dispatch(setOffersDataLoadingStatus(true));
+  async (_arg, { extra: api}) => {
     const {data} = await api.get<Offer[]>(APIRoute.Offers);
-    dispatch(setOffersDataLoadingStatus(false));
-    dispatch(loadOffers(data));
+    return data;
   },
 );
 
 export const fetchOfferDataAction = createAsyncThunk<
-  void,
+  OfferData,
   {
     id: string;
   },
@@ -42,7 +40,7 @@ export const fetchOfferDataAction = createAsyncThunk<
     state: State;
     extra: AxiosInstance;
   }
-  >('offers/fetchOfferData', async ({id}, {dispatch, extra: api}) => {
+  >('offers/fetchOfferData', async ({id}, { extra: api}) => {
     const {data: offerInfo} = await api.get<ExtendedOffer>(
       `${APIRoute.Offers}/${id}`
     );
@@ -52,7 +50,7 @@ export const fetchOfferDataAction = createAsyncThunk<
     const {data: reviews} = await api.get<Review[]>(
       `${APIRoute.Comments}/${id}`
     );
-    dispatch(loadOfferData({offerInfo, nearestOffers, reviews}));
+    return {offerInfo, nearestOffers, reviews};
   });
 
 
@@ -99,24 +97,24 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   state: State;
   extra: AxiosInstance;
 }>(
-  'user/login',
+  'user/logout',
   async (_arg, {dispatch, extra: api}) => {
-    dispatch(setOffersDataLoadingStatus(true));
     await api.delete(APIRoute.Logout);
     dropToken();
     dropEmail();
+    dispatch(fetchOffersAction());
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
-    dispatch(setOffersDataLoadingStatus(false));
     dispatch(redirectToRoute(AppRoute.Main));
   },
 );
 
 export const clearErrorAction = createAsyncThunk(
-  'other/clearError',
-  () => {
-    setTimeout(
-      () => store.dispatch(setError(null)),
-      TIMEOUT_SHOW_ERROR,
+  'offer/clearError',
+  (_, { dispatch }) => {
+    setTimeout(() => {
+      dispatch(setError(null));
+    },
+    TIMEOUT_SHOW_ERROR,
     );
   },
 );

@@ -148,3 +148,6 @@ export const cardTypeMap = new Map ([
   ['near', 'near-places__card place-card'],
   ['favorite', 'favorites__card place-card']
 ]);
+
+export const NEAREST_COUNT = 3;
+export const COMMENT_COUNT = 10;

@@ -3,7 +3,7 @@ import { store } from '../../store';
 import { redirectToRoute } from '../../store/action';
 import { cityChange } from '../../store/other-process/other-process';
 import {Offer} from '../../types/offer';
-import CityCard from '../city-card/city-card';
+import CityCard from '../card/card';
 
 type FavoritesListProps = {
   favorites: Offer[];

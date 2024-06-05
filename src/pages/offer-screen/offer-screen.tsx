@@ -1,6 +1,6 @@
 import CommentForm from '../../comment-form/comment-form';
 import ReviewsList from '../../components/list-reviews/list-reviews';
-import { AuthorizationStatus } from '../../const';
+import { AuthorizationStatus, NEAREST_COUNT } from '../../const';
 import Map from '../../components/map/map';
 import CityCardList from '../../offer-list/offer-list';
 import { useAppDispatch, useAppSelector } from '../../hooks';
@@ -13,18 +13,21 @@ import { getAuthorizationStatus } from '../../store/user-process/selectors';
 import { getRaiting } from '../../store/other-process/selectors';
 import AddToFavourites from '../../components/add-favorites/add-favorites';
 import { selectCurrentOfferData } from '../../store/selectors';
+import { getIsSelectedDataLoading } from '../../store/offers-process/selectors';
+import NotFoundScreen from '../not-found-screen/not-found-screen';
 
 function OfferScreen(): JSX.Element {
   const { id } = useParams();
   const status = useAppSelector(getAuthorizationStatus);
   const rating = useAppSelector(getRaiting);
   const { offerInfo, nearestOffers, reviews } = useAppSelector(selectCurrentOfferData);
+  const isSelectedDataLoading = useAppSelector(getIsSelectedDataLoading);
   const points: Points[] = nearestOffers.map((offer) => ({
     id: offer.id,
     location: offer.location,
   }));
 
-  const mapPoints: Points[] = points.slice(0, 3);
+  const mapPoints: Points[] = points.slice(0, NEAREST_COUNT);
 
   if (offerInfo) {
     mapPoints.push({
@@ -38,10 +41,14 @@ function OfferScreen(): JSX.Element {
     dispatch(fetchOfferDataAction({ id: id ?? '' }));
   }, [dispatch, id]);
 
-  if (!offerInfo) {
+  if (isSelectedDataLoading) {
     return <div className="container">Loading</div>;
   }
-
+  if (!offerInfo) {
+    return (
+      <NotFoundScreen />
+    );
+  }
   return (
     <div className="page">
       <LoginHeader />
@@ -139,7 +146,7 @@ function OfferScreen(): JSX.Element {
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
-            <CityCardList offers={nearestOffers.slice(0, 3)} listType={'near'} />
+            <CityCardList offers={nearestOffers.slice(0, NEAREST_COUNT)} listType={'near'} />
           </section>
         </div>
       </main>
